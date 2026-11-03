@@ -1,0 +1,123 @@
+// Prisma schema file for Imob Giro e Agro (Bevi Ajuda style platform)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+model Category {
+  id          String    @id @default(uuid())
+  name        String
+  slug        String    @unique
+  description String?
+  icon        String?   // Icon identifier
+  articles    Article[]
+}
+
+model Article {
+  id           String       @id @default(uuid())
+  title        String
+  summary      String
+  content      String       // Detailed Markdown / HTML text rules
+  videoUrl     String?      // YouTube, Vimeo, Drive, Loom or MP4 URL
+  videoType    String?      @default("training") // "reel" (9:16 vertical) | "training" (16:9 horizontal)
+  categoryId   String
+  category     Category     @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  attachments  Attachment[]
+  updatedAt    DateTime     @updatedAt
+  createdAt    DateTime     @default(now())
+}
+
+model Attachment {
+  id        String   @id @default(uuid())
+  name      String
+  fileUrl   String   // Direct URL or local path to PDF / material
+  fileType  String   @default("pdf")
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+}
+
+model InstitutionProduct {
+  id           String        @id @default(uuid())
+  bankName     String        // ex: "Caixa Econômica", "Itaú", "Banco do Brasil Agro"
+  segment      String        // "Imobiliário", "Crédito PJ", "Crédito Agro"
+  description  String?
+  triggerTiers TriggerTier[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model TriggerTier {
+  id                   String             @id @default(uuid())
+  minVolume            Float              // Minimum volume in BRL
+  maxVolume            Float?             // Maximum volume in BRL (null means unlimited "+")
+  commissionRate       Float              // Percentage rate (ex: 1.5 for 1.5%)
+  institutionProductId String
+  institutionProduct   InstitutionProduct @relation(fields: [institutionProductId], references: [id], onDelete: Cascade)
+}
+
+model HeroBanner {
+  id                   String   @id @default("default-hero")
+  badgeText            String   @default("Regras & Manuais Safra 2025/2026")
+  title                String   @default("Como podemos te ajudar?")
+  subtitle             String   @default("Consulte manuais operacionais de bancos, downloads de PDFs com checklist de esteira e regras operacionais atualizadas.")
+  primaryButtonText    String   @default("Ver Regras & Manuais")
+  primaryButtonUrl     String   @default("/categorias/treinamentos")
+  secondaryButtonText  String?  @default("")
+  secondaryButtonUrl   String?  @default("")
+  mediaType            String   @default("cards") // "cards" | "video"
+  videoUrl             String?  @default("")
+  videoTitle           String?  @default("")
+  cardsJson            String?  @default("[]")
+  updatedAt            DateTime @updatedAt
+}
+
+model AdminSession {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model SystemConfig {
+  key   String @id
+  value String
+}
+
+model ShortReel {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  videoUrl     String   // Link do YouTube Shorts (inclusive Não Listado) ou MP4
+  categoryTag  String?  @default("Treinamento Rápido")
+  order        Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model StoredFile {
+  id        String   @id @default(uuid())
+  name      String
+  mimeType  String   @default("application/pdf")
+  size      Int      @default(0)
+  data      String   // Base64 encoded file content
+  createdAt DateTime @default(now())
+}
+
+model UploadChunk {
+  id          String   @id @default(uuid())
+  uploadId    String
+  chunkIndex  Int
+  totalChunks Int
+  data        String   // Base64 chunk data (~1.5MB each)
+  createdAt   DateTime @default(now())
+
+  @@index([uploadId, chunkIndex])
+}

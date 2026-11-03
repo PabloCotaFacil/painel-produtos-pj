@@ -1,0 +1,247 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+.dark {
+  --background: #0b0f19;
+  --foreground: #f8fafc;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Azul clareado, vibrante e moderno para o topo */
+.gradient-header {
+  background: linear-gradient(135deg, #1e40af 0%, #0284c7 60%, #0284c7 100%);
+}
+
+.gradient-hero {
+  background: linear-gradient(135deg, #1d4ed8 0%, #0284c7 55%, #06b6d4 100%);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);
+}
+
+.dark .card-shadow {
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+}
+
+.card-float {
+  box-shadow: 0 12px 32px -4px rgba(15, 23, 42, 0.12), 0 4px 8px -2px rgba(15, 23, 42, 0.04);
+}
+
+.dark .card-float {
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.6), 0 4px 8px -2px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================================ */
+/* RICH TEXT ARTICLE BODY STYLING (LIGHT & DARK MODE)           */
+/* ============================================================ */
+.article-body {
+  color: #1e293b;
+  line-height: 1.7;
+}
+
+.dark .article-body {
+  color: #e2e8f0;
+}
+
+.article-body h1 {
+  font-size: 1.65rem;
+  font-weight: 900;
+  color: #0f172a;
+  margin-top: 1.75rem;
+  margin-bottom: 0.85rem;
+  line-height: 1.25;
+}
+
+.article-body h2 {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.article-body h3 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.article-body h4,
+.article-body h5,
+.article-body h6 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-top: 1.1rem;
+  margin-bottom: 0.45rem;
+  line-height: 1.4;
+}
+
+/* No modo escuro, títulos e subtítulos acompanham sempre em branco/claro */
+.dark .article-body h1,
+.dark .article-body h2,
+.dark .article-body h3,
+.dark .article-body h4,
+.dark .article-body h5,
+.dark .article-body h6,
+.dark .article-body h1 *,
+.dark .article-body h2 *,
+.dark .article-body h3 *,
+.dark .article-body h4 *,
+.dark .article-body h5 *,
+.dark .article-body h6 * {
+  color: #ffffff !important;
+}
+
+.article-body p {
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.7;
+}
+
+.dark .article-body p,
+.dark .article-body li,
+.dark .article-body dd,
+.dark .article-body dt,
+.dark .article-body blockquote {
+  color: #e2e8f0;
+}
+
+/* Garante que classes escuras coladas dentro do corpo do artigo acompanhem o modo escuro */
+.dark .article-body .text-black,
+.dark .article-body .text-slate-950,
+.dark .article-body .text-slate-900,
+.dark .article-body .text-slate-800,
+.dark .article-body .text-slate-700,
+.dark .article-body .text-gray-900,
+.dark .article-body .text-gray-800,
+.dark .article-body .text-gray-700 {
+  color: #f8fafc !important;
+}
+
+.article-body ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-body li {
+  margin-bottom: 0.35rem;
+}
+
+.article-body strong,
+.article-body b {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.dark .article-body strong,
+.dark .article-body b {
+  color: #ffffff;
+}
+
+.article-body a {
+  color: #2563eb;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.dark .article-body a {
+  color: #38bdf8;
+}
+
+.article-body hr {
+  border-color: #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+.dark .article-body hr {
+  border-color: #1e293b;
+}
+
+/* Tabelas dentro dos artigos */
+.article-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25rem 0;
+  font-size: 0.9rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.dark .article-body table {
+  border-color: #334155;
+}
+
+.article-body th {
+  background-color: #f1f5f9;
+  color: #0f172a;
+  font-weight: 800;
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #cbd5e1;
+}
+
+.dark .article-body th {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-bottom-color: #334155;
+}
+
+.article-body td {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.dark .article-body td {
+  border-bottom-color: #1e293b;
+  color: #e2e8f0 !important;
+  background-color: transparent !important;
+}
+
+.article-body tr:last-child td {
+  border-bottom: none;
+}
+
+.article-body u {
+  text-decoration: underline;
+}
+
+.article-body s,
+.article-body strike {
+  text-decoration: line-through;
+}
+
+.article-body [contenteditable]:empty:before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
+  cursor: text;
+}
