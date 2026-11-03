@@ -759,11 +759,11 @@ export default function AdminMateriaisClient({
 
         <button
           onClick={() => setActiveTab('categories')}
-          className={lex-1 min-w-[160px] py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center space-x-2 transition ${
+          className={`flex-1 min-w-[160px] py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center space-x-2 transition ${
             activeTab === 'categories'
               ? 'bg-blue-700 text-white shadow-md'
               : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
-          }}
+          }`}
         >
           <FolderOpen className="w-4 h-4 text-blue-600" />
           <span>Categorias & Produtos PJ</span>
