@@ -31,6 +31,7 @@ import {
 import VideoPlayer from '@/components/VideoPlayer';
 import RichTextEditor from '@/components/RichTextEditor';
 import AdminReelsManager from '@/components/AdminReelsManager';
+import AdminCategoriesManager from '@/components/AdminCategoriesManager';
 import { smartSearchArticles } from '@/lib/search';
 
 interface Attachment {
@@ -69,7 +70,7 @@ export default function AdminMateriaisClient({
   const router = useRouter();
 
   // Navigation tab state: 'list' (Materiais Disponíveis), 'editor' (Criar/Editar), 'banner' (Banner da Home), 'reels' (Pílulas Rápidas), 'password' (Segurança)
-  const [activeTab, setActiveTab] = useState<'list' | 'editor' | 'banner' | 'reels' | 'password'>(
+  const [activeTab, setActiveTab] = useState<'list' | 'editor' | 'categories' | 'banner' | 'reels' | 'password'>(
     initialArticles.length > 0 ? 'list' : 'editor'
   );
 
@@ -130,15 +131,14 @@ export default function AdminMateriaisClient({
     setMaterialKind(kind);
     if (kind === 'training_16_9') {
       setVideoType('training');
-      const treinamentosCat = categories.find((c) => c.slug === 'treinamentos');
-      if (treinamentosCat) {
-        setCategoryId(treinamentosCat.id);
+      // Mantém a categoria que o usuário escolheu ou sugere a categoria atual
+      if (!categoryId && categories[0]?.id) {
+        setCategoryId(categories[0].id);
       }
     } else if (kind === 'reel_9_16') {
       setVideoType('reel');
-      const treinamentosCat = categories.find((c) => c.slug === 'treinamentos');
-      if (treinamentosCat) {
-        setCategoryId(treinamentosCat.id);
+      if (!categoryId && categories[0]?.id) {
+        setCategoryId(categories[0].id);
       }
     } else {
       setVideoType('training');
@@ -755,6 +755,18 @@ export default function AdminMateriaisClient({
               <span>Subir Novo Material / Vídeo</span>
             </>
           )}
+        </button>
+
+        <button
+          onClick={() => setActiveTab('categories')}
+          className={lex-1 min-w-[160px] py-3 px-4 rounded-xl text-xs font-extrabold flex items-center justify-center space-x-2 transition ${
+            activeTab === 'categories'
+              ? 'bg-blue-700 text-white shadow-md'
+              : 'bg-slate-50 text-slate-700 hover:bg-slate-100'
+          }}
+        >
+          <FolderOpen className="w-4 h-4 text-blue-600" />
+          <span>Categorias & Produtos PJ</span>
         </button>
 
         <button
@@ -1527,6 +1539,13 @@ export default function AdminMateriaisClient({
       )}
 
       {/* TAB 3: MOLDAR BANNER DA HOME */}
+            {activeTab === 'categories' && (
+        <AdminCategoriesManager
+          categories={categories}
+          onCategoriesChanged={fetchFreshCategories}
+        />
+      )}
+
       {activeTab === 'banner' && (
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 card-shadow space-y-6">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 gap-2">

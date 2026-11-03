@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getOrSeedCategories } from '@/lib/categories';
 import { checkIsAdmin } from '@/lib/auth';
+import { invalidateCache } from '@/lib/cache';
 
 export async function GET() {
   try {
@@ -22,22 +23,32 @@ export async function POST(request: Request) {
 
     const { name, slug, description, icon } = await request.json();
 
-    if (!name || !slug) {
-      return NextResponse.json({ error: 'Nome e slug são obrigatórios' }, { status: 400 });
+    if (!name) {
+      return NextResponse.json({ error: 'Nome da categoria é obrigatório' }, { status: 400 });
     }
+
+    const finalSlug = (slug || name)
+      .toLowerCase()
+      .trim()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
 
     const category = await prisma.category.create({
       data: {
-        name,
-        slug: slug.toLowerCase().trim().replace(/\s+/g, '-'),
-        description,
+        name: name.trim(),
+        slug: finalSlug,
+        description: description ? description.trim() : null,
         icon: icon || 'folder',
       },
     });
 
+    invalidateCache('categories');
+
     return NextResponse.json(category, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Erro ao criar categoria:', error);
-    return NextResponse.json({ error: 'Erro ao criar categoria' }, { status: 500 });
+    return NextResponse.json({ error: error?.message || 'Erro ao criar categoria' }, { status: 500 });
   }
 }

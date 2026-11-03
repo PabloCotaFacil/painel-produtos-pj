@@ -39,6 +39,19 @@ interface SearchReelResult {
 }
 
 export default function Header({ initialSearch = '' }: { initialSearch?: string }) {
+    const [navCategories, setNavCategories] = useState<Array<{ id: string; name: string; slug: string }>>([]);
+
+  useEffect(() => {
+    fetch('/api/categories')
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) {
+          setNavCategories(data.filter((c: any) => c.slug !== 'treinamentos'));
+        }
+      })
+      .catch(console.error);
+  }, []);
+
   const [search, setSearch] = useState(initialSearch);
   const [isOpen, setIsOpen] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -358,14 +371,19 @@ export default function Header({ initialSearch = '' }: { initialSearch?: string 
             <Layers className="w-3.5 h-3.5 text-slate-400 shrink-0" />
             <span>Todas as Categorias</span>
           </Link>
-          <Link href="/categorias/produtos-pj" className="hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center space-x-1.5 whitespace-nowrap shrink-0">
-            <Briefcase className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" />
-            <span>Produtos PJ</span>
-          </Link>
           <Link href="/categorias/treinamentos" className="hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center space-x-1.5 whitespace-nowrap shrink-0">
             <Video className="w-3.5 h-3.5 text-rose-500 shrink-0" />
             <span>Treinamentos e Videoaulas</span>
           </Link>
+          {navCategories.map((c) => (
+            <Link
+              key={c.id}
+              href={/categorias/}
+              className="hover:text-blue-600 dark:hover:text-blue-400 transition flex items-center space-x-1.5 whitespace-nowrap shrink-0"
+            >
+              <span>{c.name}</span>
+            </Link>
+          ))}
         </div>
       </div>
     </header>

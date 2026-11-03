@@ -61,7 +61,7 @@ export function markSchemaVerified(): void {
   globalCache.__schemaVerified = true;
 }
 
-const REMOVED_CATEGORY_SLUGS = ['credito-pj', 'credito-agro'];
+const REMOVED_CATEGORY_SLUGS: string[] = [];
 
 /**
  * Busca otimizada de artigos para listagens e busca inteligente:
