@@ -36,7 +36,7 @@ export async function getAdminUsername(): Promise<string> {
   } catch (error) {
     console.error('Erro ao buscar usuário no banco:', error);
   }
-  return (process.env.ADMIN_USERNAME || 'admin').trim();
+  return (process.env.ADMIN_USERNAME || 'pj@franquiascotafacil.com.br').trim();
 }
 
 export async function setAdminUsername(newUsername: string): Promise<boolean> {
@@ -64,7 +64,7 @@ export async function getAdminPassword(): Promise<string> {
   } catch (error) {
     console.error('Erro ao buscar senha no banco:', error);
   }
-  return process.env.ADMIN_PASSWORD || 'admin';
+  return process.env.ADMIN_PASSWORD || 'Cota2026*';
 }
 
 export async function setAdminPassword(newPassword: string): Promise<boolean> {

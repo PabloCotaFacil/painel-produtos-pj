@@ -69,7 +69,7 @@ export default function AdminLoginPage() {
             <div className="relative">
               <input
                 type="text"
-                placeholder="ex: admin"
+                placeholder="ex: pj@franquiascotafacil.com.br"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-300 rounded-xl font-bold text-slate-900 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
